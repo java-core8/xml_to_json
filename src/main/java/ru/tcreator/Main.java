@@ -11,7 +11,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -79,16 +78,18 @@ public class Main {
         return gson.toJson(obj, listType);
     }
 
-    static public void writeStringToFile(String textJson, String filename, String path) throws IOException {
+    static public void writeStringToFile(String textJson, String filename, String path)
+            throws Exception {
         Path filePath = Paths.get(path, filename);
         File file = new File(path, filename);
         try {
-            file.createNewFile();
-            if (file.exists()) {
-                Files.writeString(filePath, textJson);
+
+            if (!file.exists()) {
+                file.createNewFile();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            Files.writeString(filePath, textJson);
+        } catch (Exception e) {
+            e.getMessage();
         }
     }
 
